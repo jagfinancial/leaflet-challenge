@@ -1,7 +1,7 @@
 // This gets inserted into the div with an id of 'map'
 var myMap = L.map("map", {
     center: [37.09, -95.71],
-    zoom: 5
+    zoom: 4
   });
   
 // Adding a tile layer (the background map image) to our map
@@ -15,11 +15,10 @@ var initialLayer = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/til
 }).addTo(myMap);
 
 // Store our API endpoint inside queryUrl
-var earthquakeurl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+var earthquake_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-// Perform a GET request to the query URL. Once we get a response, send the data.features object to the createFeatures function
-d3.json(earthquakeurl).then(function(data) {
-  // Create functions for style, color and radiues
+// Perform a GET request to the query URL. Once we get a response, send the data.features object to the create Features function
+d3.json(earthquake_url).then(function(data) {
 
   function mapStyle(feature) {
     return {
@@ -72,31 +71,30 @@ d3.json(earthquakeurl).then(function(data) {
       layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
 
     }
-    // Add to myMap
+
   }).addTo(myMap);
 
-  //Place legend in bottom right
+  // an object legend
   var legend = L.control({
     position: "bottomright"
   });
 
+  // Add legend
   legend.onAdd = function() {
     var div = L.DomUtil.create("div", "info legend");
 
     var grades = [0, 1, 2, 3, 4, 5];
     var colors = ["#2c99ea", "#2ceabf", "#92ea2c", "#d5ea2c","#eaa92c", "#ea2c2c"];
 
-
-  // Loop through our intervals to generate a label with a colored square for each interval
-    for (var i = 0; i<grades.length; i++) {
+    // Looping through
+    for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
-      "<i style='background: " + colors[i] + "'></i> " +
-      grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+        "<i style='background: " + colors[i] + "'></i> " +
+        grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
     }
     return div;
-
   };
-// Add legend to myMap
-  legend.addTo(myMap)
-  
+
+  // Finally, we our legend to the map.
+  legend.addTo(myMap);
 });
