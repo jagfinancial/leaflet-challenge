@@ -74,19 +74,18 @@ d3.json(earthquake_url).then(function(data) {
 
   }).addTo(myMap);
 
-  // an object legend
+  // Create a legend for your map data.
+  
   var legend = L.control({
     position: "bottomright"
   });
 
-  // Add legend
   legend.onAdd = function() {
     var div = L.DomUtil.create("div", "info legend");
 
     var grades = [0, 1, 2, 3, 4, 5];
     var colors = ["#2c99ea", "#2ceabf", "#92ea2c", "#d5ea2c","#eaa92c", "#ea2c2c"];
 
-    // Looping through
     for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
         "<i style='background: " + colors[i] + "'></i> " +
@@ -94,7 +93,6 @@ d3.json(earthquake_url).then(function(data) {
     }
     return div;
   };
-
-  // Finally, we our legend to the map.
   legend.addTo(myMap);
 });
+
